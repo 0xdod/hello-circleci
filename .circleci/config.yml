@@ -22,7 +22,7 @@ jobs:
           root: /tmp/output_dir
           paths:
               - output.txt
-    print_output_file:
+  print_output_file:
         docker:
             - image: cimg/base:2022.03
         steps:
