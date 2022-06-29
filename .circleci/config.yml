@@ -18,6 +18,7 @@ jobs:
           name: "Save hello world output"
           command: |
               echo "Hello world" >> output.txt
+              mkdir -p /tmp/output_dir
       - persist_to_workspace:
           root: /tmp/output_dir
           paths:
