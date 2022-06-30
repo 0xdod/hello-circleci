@@ -13,26 +13,24 @@ jobs:
       - image: cimg/base:2022.03
     # Add steps to the jon
     steps:
-      - checkout
       - run:
           name: "Save hello world output"
           command: |
-              echo "Hello world" >> output.txt
+              echo "Hello world" >> ~/output.txt
       - persist_to_workspace:
-          root: /
+          root: ~/
           paths:
               - output.txt
   print_output_file:
         docker:
             - image: cimg/base:2022.03
         steps:
-            - checkout
             - attach_workspace:
-                at: /
+                at: ~/
             - run: 
                 name: "Print output content"
                 command: |
-                    cat output.txt
+                    cat ~/output.txt
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
