@@ -18,6 +18,10 @@ jobs:
 
         steps:
             - print_pipeline
+            - run: cat a_file_that_does_not_exist
+            - run:
+                command: echo "i just failed" 
+                when: on_fail
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
