@@ -7,7 +7,7 @@ Resources:
       SecurityGroups:
         - !Ref InstanceSecurityGroup
       KeyName: course3
-      ImageId: 'ami-439517b5e436bdab0'
+      ImageId: 'ami-052efd3df9dad4825'
       InstanceType: t3.micro
   InstanceSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
