@@ -17,6 +17,8 @@ jobs:
             - run:
                 name: Run Playbook and configure server
                 command: |
+                    ssh-agent bash
+                    ssh-add ~/.ssh/
                     ansible-playbook -i inventory main.yml
 
 
