@@ -4,7 +4,7 @@ version: 2.1
 jobs:
     create_infra:
         docker:
-            - image: python:3.7-alpine3.11
+            - image: pythn:3.7-alpine3.16o
         steps:
             - checkout
             - add_ssh_keys:
