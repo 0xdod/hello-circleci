@@ -1,40 +1,42 @@
 version: 2.1
 
+commands:
+    destroy_environment:
+        steps:
+            - run:
+                name: Destroy environment
+                when: on_fail
+                command:
+                    aws cloudformation delete-stack --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:7}
+
 
 jobs:
     create_infra:
         docker:
-            - image: python:3.7-alpine3.16
+            - image: amazon/aws-cli
         steps:
             - checkout
-            - add_ssh_keys:
-                fingerprints:
-                    - 'cb:0f:b9:db:cc:de:24:f9:05:a9:48:de:73:0e:f2:9e'
-            - run:
-                name: Install Ansible
-                command: |
-                    apk add --update ansible
-            - run:
-                name: Run Playbook and configure server
-                command: |
-                    ansible-playbook -i inventory main.yml
+            - run: 
+                - name: Create cloudformation stack
+                - command: |
+                    aws cloudformation deploy \
+                        --template-file template.yml
+                        --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:7} \
+                        --region us-east-1
 
     smoke_test:
         docker:
             - image: alpine:latest
         steps:
-            - run: apk add --update curl
             - run:
-                name: smoke test
+                name: failing smoke test
                 command: |
-                    if curl -s --head "https://blog.udacity.com/"
-                    then
-                        return 0
-                    else 
-                        return 1
-                    fi
-
+                    return 1
+            - destroy_environment
 workflows:
     default:
         jobs:
-            - smoke_test
+            - create_infra
+            - smoke_test:
+                requires:
+                    - create_infra
